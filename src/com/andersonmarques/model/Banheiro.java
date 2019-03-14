@@ -16,7 +16,7 @@ public class Banheiro {
 		/** lock trava o acesso de outras threads */
 		lock.lock();
 
-		usarBanheiro(nome, 5000, "rápida");
+		usarBanheiro(nome, 3000, "rápida");
 
 		/** libera o acesso. */
 		lock.unlock();
@@ -27,14 +27,14 @@ public class Banheiro {
 		System.out.println(nome + " bateu na porta");
 
 		lock.lock();
-		usarBanheiro(nome, 15000, "demorada");
+		usarBanheiro(nome, 7000, "demorada");
 		lock.unlock();
 	}
 
 	private void usarBanheiro(String nome, long tempoEstimado, String tempoDescrito) {
 		System.out.println(nome + " entrando no banheiro");
 
-		if (isBanheiroSujo) {
+		while (isBanheiroSujo) {
 			esperarLimpeza(nome);
 		}
 
@@ -45,7 +45,8 @@ public class Banheiro {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-
+		
+		isBanheiroSujo = true;
 		System.out.println(nome + " dando descarga");
 		System.out.println(nome + " lavando a mao");
 		System.out.println(nome + " saindo do banheiro");
