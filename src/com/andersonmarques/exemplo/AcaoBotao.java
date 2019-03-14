@@ -28,7 +28,7 @@ public class AcaoBotao implements ActionListener {
     	});
     	
     	//(Opcional) Adiciona um nome para Thread
-    	threadCalcular.setName("Realizar multiplicação");
+    	threadCalcular.setName("Realizar multiplicaÃ§Ã£o");
     	
     	//Roda o thread
     	threadCalcular.start();
