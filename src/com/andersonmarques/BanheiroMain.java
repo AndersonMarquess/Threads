@@ -9,5 +9,6 @@ public class BanheiroMain {
 		
 		new Thread(() -> banheiro.fazerNumero1(), "João").start();
 		new Thread(() -> banheiro.fazerNumero2(), "Pedro").start();
+		new Thread(() -> banheiro.limpar(), "Limpeza").start();
 	}
 }
