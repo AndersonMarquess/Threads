@@ -9,14 +9,14 @@ import javax.swing.JTextField;
 public class Main {
 
 	public static void main(String[] args) {
-		JFrame janela = new JFrame("Multiplicação Demorada");
+		JFrame janela = new JFrame("MultiplicaÃ§Ã£o Demorada");
 
         JTextField primeiro = new JTextField(10);
         JTextField segundo = new JTextField(10);
         JButton botao = new JButton(" = ");
         JLabel resultado = new JLabel("           ?          ");
 
-        //quando clica no botão será executado a classe Multiplicador
+        //quando clica no botï¿½o serï¿½ executado a classe Multiplicador
         botao.addActionListener(new AcaoBotao(primeiro, segundo, resultado));
 
         JPanel painel = new JPanel();
