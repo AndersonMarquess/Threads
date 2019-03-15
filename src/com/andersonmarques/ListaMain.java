@@ -5,7 +5,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 
+import com.andersonmarques.model.Lista;
 import com.andersonmarques.model.TarefaAdicionarElemento;
+import com.andersonmarques.model.TarefaImpirmirElementos;
 
 public class ListaMain {
 
@@ -18,16 +20,14 @@ public class ListaMain {
 		List<String> listaThreadSafeComCollections = Collections.synchronizedList(new ArrayList<>());
 		
 		/*ou*/
-		Vector<String> listaThreadSafePadrao = new Vector<>();
+        Vector<String> listaThreadSafePadrao = new Vector<>();
+        
+        Lista lista = new Lista();
 		
 		for (int i = 0; i < 10; i++) {
-			new Thread(new TarefaAdicionarElemento(listaThreadSafePadrao, i)).start();
+			new Thread(new TarefaAdicionarElemento(lista, i)).start();
 		}
 		
-		Thread.sleep(1000);
-		
-		for (int i = 0; i < listaThreadSafePadrao.size(); i++) {
-			System.out.println(i+" - "+listaThreadSafePadrao.get(i));
-		}
+		new Thread(new TarefaImpirmirElementos(lista)).start();
 	}
 }
