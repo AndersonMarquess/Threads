@@ -1,7 +1,4 @@
-package com.andersonmarques;
-
-import com.andersonmarques.model.BuscarNome;
-import com.andersonmarques.model.OlaThread;
+package com.andersonmarques.arquivo;
 
 public class Main {
 

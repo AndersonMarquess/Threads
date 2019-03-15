@@ -1,4 +1,4 @@
-package com.andersonmarques.model;
+package com.andersonmarques.lista;
 
 public class Lista {
 	private String[] elementos = new String[1000];

@@ -1,4 +1,4 @@
-package com.andersonmarques.model;
+package com.andersonmarques.threads;
 
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;

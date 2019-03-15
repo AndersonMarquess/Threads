@@ -1,6 +1,4 @@
-package com.andersonmarques;
-
-import com.andersonmarques.model.Banheiro;
+package com.andersonmarques.threads;
 
 public class BanheiroMain {
 

@@ -1,4 +1,4 @@
-package com.andersonmarques.model;
+package com.andersonmarques.lista;
 
 public class TarefaImpirmirElementos implements Runnable {
 

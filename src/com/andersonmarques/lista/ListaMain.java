@@ -1,13 +1,9 @@
-package com.andersonmarques;
+package com.andersonmarques.lista;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
-
-import com.andersonmarques.model.Lista;
-import com.andersonmarques.model.TarefaAdicionarElemento;
-import com.andersonmarques.model.TarefaImpirmirElementos;
 
 public class ListaMain {
 

@@ -1,4 +1,4 @@
-package com.andersonmarques.model;
+package com.andersonmarques.arquivo;
 
 /**
  * É possível usar a implementação do Runnable em uma classe de forma direta ou

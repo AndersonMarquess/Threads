@@ -1,4 +1,4 @@
-package com.andersonmarques.model;
+package com.andersonmarques.arquivo;
 
 import java.io.File;
 import java.io.FileNotFoundException;
