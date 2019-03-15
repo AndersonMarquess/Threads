@@ -1,4 +1,4 @@
-﻿### Curso Threads parte 1 Alura.
+﻿### Curso Threads I e II Alura.
 
 Todo conteúdo foi produzido durante as aulas.
 
