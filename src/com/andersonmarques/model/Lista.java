@@ -28,4 +28,8 @@ public class Lista {
 	public String pegarElementoNaPosicao(int posicao) {
 		return elementos[posicao];
 	}
+
+	public boolean isCheia() {
+		return elementos.length == index;
+	}
 }

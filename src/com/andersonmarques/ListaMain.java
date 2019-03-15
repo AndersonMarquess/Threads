@@ -12,22 +12,25 @@ import com.andersonmarques.model.TarefaImpirmirElementos;
 public class ListaMain {
 
 	public static void main(String[] args) throws InterruptedException {
-		
-		/*Não é thread safe*/
+
+		/* Não é thread safe */
 		List<String> listaNaoThreadSafe = new ArrayList<>();
-		
-		/*List por padrão não é sincronizada, podemos mudar este estado com o Collections.synchronizedList*/
+
+		/*
+		 * List por padrão não é sincronizada, podemos mudar este estado com o
+		 * Collections.synchronizedList
+		 */
 		List<String> listaThreadSafeComCollections = Collections.synchronizedList(new ArrayList<>());
-		
-		/*ou*/
-        Vector<String> listaThreadSafePadrao = new Vector<>();
-        
-        Lista lista = new Lista();
-		
+
+		/* ou */
+		Vector<String> listaThreadSafePadrao = new Vector<>();
+
+		Lista lista = new Lista();
+
 		for (int i = 0; i < 10; i++) {
 			new Thread(new TarefaAdicionarElemento(lista, i)).start();
 		}
-		
+
 		new Thread(new TarefaImpirmirElementos(lista)).start();
 	}
 }
