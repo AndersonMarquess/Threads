@@ -3,6 +3,8 @@ package com.andersonmarques.servidor;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import com.andersonmarques.servidor.tarefa.DistribuirTarefa;
+
 public class ServidorMain {
 
 	public static void main(String[] args) throws Exception {
@@ -16,7 +18,10 @@ public class ServidorMain {
 		
 		while (true) {
 			Socket socketRequisicaoClient = serverSocket.accept();
-			System.out.println("Cliente recebido na porta: "+socketRequisicaoClient.getPort());
+			System.out.println("Cliente recebido na porta: " + socketRequisicaoClient.getPort());
+
+			DistribuirTarefa distribuirTarefa = new DistribuirTarefa(socketRequisicaoClient);
+			new Thread(distribuirTarefa).start();
 		}
 	}
 }
