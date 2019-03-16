@@ -14,24 +14,31 @@ public class ClientMain {
 		 */
 		Socket socketRespostaServidor = new Socket("localhost", 54321);
 		System.out.println("Conectado na porta 54321");
-		
-		enviarInfo(socketRespostaServidor);
 
-		Scanner scanner = new Scanner(System.in);
-		scanner.nextLine();
-		
-		scanner.close();
+		enviarInfo(socketRespostaServidor.getOutputStream());
+
 		socketRespostaServidor.close();
 	}
-	
+
 	/**
 	 * Envia informação para o servidor.
-	 * @param socketRespostaServidor
+	 * 
+	 * @param outputStream
 	 * @throws Exception
 	 */
-	private static void enviarInfo(Socket socketRespostaServidor) throws Exception {
-		OutputStream outputStream = socketRespostaServidor.getOutputStream();
+	private static void enviarInfo(OutputStream outputStream) throws Exception {
 		PrintStream saida = new PrintStream(outputStream);
-		saida.println("Cliente 1");
+		Scanner scanner = new Scanner(System.in);
+
+		while (scanner.hasNextLine()) {
+			String linha = scanner.nextLine();
+
+			if (linha.trim().isEmpty()) {
+				scanner.close();
+				saida.close();
+				break;
+			}
+			saida.println(linha);
+		}
 	}
 }
