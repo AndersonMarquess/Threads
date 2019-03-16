@@ -5,6 +5,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import com.andersonmarques.servidor.tarefa.ImprimirDetalhesThreads;
 import com.andersonmarques.servidor.tarefa.TarefaAgendada;
 
 /**
@@ -36,7 +37,7 @@ public class ThreadAgendaMain {
 	private static ScheduledExecutorService threadAgendada() {
 		ScheduledExecutorService scheduledService = Executors.newScheduledThreadPool(1);
 
-		scheduledService.scheduleAtFixedRate(new TarefaAgendada(), 0, 5, TimeUnit.SECONDS);
+		scheduledService.scheduleAtFixedRate(new ImprimirDetalhesThreads(), 0, 30, TimeUnit.SECONDS);
 		return scheduledService;
 	}
 }
