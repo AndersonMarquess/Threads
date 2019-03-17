@@ -5,23 +5,22 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Scanner;
 
+import com.andersonmarques.servidor.service.ServidorService;
+
 public class DistribuirTarefa implements Runnable {
 
 	private Socket socketRequisicaoClient;
+	private ServidorService servidorService;
 
-	public DistribuirTarefa(Socket socketRequisicaoClient) {
+	public DistribuirTarefa(Socket socketRequisicaoClient, ServidorService servidorService) {
 		this.socketRequisicaoClient = socketRequisicaoClient;
+		this.servidorService = servidorService;
 	}
 
 	@Override
 	public void run() {
 		System.out.println("Distribuindo tarefa para socket: " + socketRequisicaoClient);
 		dadosRecebidosDoCliente();
-		try {
-			Thread.sleep(20000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 	}
 
 	/**
@@ -32,7 +31,12 @@ public class DistribuirTarefa implements Runnable {
 			Scanner scanner = new Scanner(socketRequisicaoClient.getInputStream());
 			while (scanner.hasNextLine()) {
 				PrintStream printStream = new PrintStream(socketRequisicaoClient.getOutputStream());
-				printStream.println(verificarComando(scanner.nextLine()));
+				String resposta = verificarComando(scanner.nextLine());
+				printStream.println(resposta);
+				
+				if(resposta.equalsIgnoreCase("Desligando servidor")) {
+					servidorService.desligar();
+				}
 			}
 			scanner.close();
 		} catch (IOException e) {
@@ -43,11 +47,13 @@ public class DistribuirTarefa implements Runnable {
 	private String verificarComando(String comando) {
 		System.out.println("Recebeu " + comando);
 
-		switch (comando) {
+		switch (comando.toLowerCase()) {
 			case "c1":
 				return "Confirmação comando c1";
 			case "c2":
 				return "Confirmação comando c2";
+			case "fim":
+				return "Desligando servidor";
 			default:
 				return "Comando inválido.";
 		}
