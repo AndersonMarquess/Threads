@@ -1,11 +1,10 @@
 package com.andersonmarques.servidor;
 
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import com.andersonmarques.servidor.tarefa.DistribuirTarefa;
+import com.andersonmarques.servidor.service.ServidorService;
 
 public class ServidorMain {
 
@@ -24,13 +23,8 @@ public class ServidorMain {
 		 * newCachedThreadPool
 		 */
 		ExecutorService threadPool = Executors.newCachedThreadPool();
-
-		while (true) {
-			Socket socketRequisicaoClient = serverSocket.accept();
-			System.out.println("Cliente recebido na porta: " + socketRequisicaoClient.getPort());
-
-			DistribuirTarefa distribuirTarefa = new DistribuirTarefa(socketRequisicaoClient);
-			threadPool.execute(distribuirTarefa);
-		}
+		
+		ServidorService servidorService = new ServidorService(serverSocket, threadPool);
+		servidorService.distribuirTarefas();
 	}
 }
