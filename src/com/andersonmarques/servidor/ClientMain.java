@@ -3,6 +3,7 @@ package com.andersonmarques.servidor;
 import java.net.Socket;
 
 import com.andersonmarques.servidor.tarefa.EnviarInformacoesParaSocket;
+import com.andersonmarques.servidor.tarefa.ImprimirResposta;
 
 public class ClientMain {
 
@@ -15,6 +16,7 @@ public class ClientMain {
 		System.out.println("Conectado na porta: "+socketRespostaServidor.getLocalPort());
 
 		Thread threadEnviar = new Thread(new EnviarInformacoesParaSocket(socketRespostaServidor));
+		new Thread(new ImprimirResposta(socketRespostaServidor)).start();
 		threadEnviar.start();
 		
 		/* A thread main só continua após a thread de enviar informações ser finalizada. */

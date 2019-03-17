@@ -1,6 +1,9 @@
 package com.andersonmarques.servidor.tarefa;
 
+import java.io.IOException;
+import java.io.PrintStream;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class DistribuirTarefa implements Runnable {
 
@@ -20,11 +23,33 @@ public class DistribuirTarefa implements Runnable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Imprime os dados recebido do cliente
 	 */
 	private void dadosRecebidosDoCliente() {
-		new Thread(new ImprimirResposta(socketRequisicaoClient)).start();
+		try {
+			Scanner scanner = new Scanner(socketRequisicaoClient.getInputStream());
+			while (scanner.hasNextLine()) {
+				PrintStream printStream = new PrintStream(socketRequisicaoClient.getOutputStream());
+				printStream.println(verificarComando(scanner.nextLine()));
+			}
+			scanner.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private String verificarComando(String comando) {
+		System.out.println("Recebeu " + comando);
+
+		switch (comando) {
+			case "c1":
+				return "Confirmação comando c1";
+			case "c2":
+				return "Confirmação comando c2";
+			default:
+				return "Comando inválido.";
+		}
 	}
 }
