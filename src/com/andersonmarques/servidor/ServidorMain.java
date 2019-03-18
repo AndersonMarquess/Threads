@@ -4,6 +4,7 @@ import java.net.ServerSocket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import com.andersonmarques.servidor.factory.FabricaThreads;
 import com.andersonmarques.servidor.service.ServidorService;
 
 public class ServidorMain {
@@ -18,12 +19,14 @@ public class ServidorMain {
 		ServerSocket serverSocket = new ServerSocket(54321);
 
 		/**
-		 * Define o tamanho maximo do pool de threads -> newFixedThreadPool Define o
-		 * tamanho de pool aumentando e diminuindo de forma automática ->
+		 * Define o tamanho maximo do pool de threads -> newFixedThreadPool </br>
+		 * 
+		 * Define o tamanho de pool aumentando e diminuindo de forma automática ->
 		 * newCachedThreadPool
+		 *  
 		 */
-		ExecutorService threadPool = Executors.newCachedThreadPool();
-		
+		ExecutorService threadPool = Executors.newFixedThreadPool(4, new FabricaThreads());
+
 		ServidorService servidorService = new ServidorService(serverSocket, threadPool);
 		servidorService.distribuirTarefas();
 	}
