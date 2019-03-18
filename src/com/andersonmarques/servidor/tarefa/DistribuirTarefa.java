@@ -31,12 +31,7 @@ public class DistribuirTarefa implements Runnable {
 			Scanner scanner = new Scanner(socketRequisicaoClient.getInputStream());
 			while (scanner.hasNextLine()) {
 				PrintStream printStream = new PrintStream(socketRequisicaoClient.getOutputStream());
-				String resposta = verificarComando(scanner.nextLine());
-				printStream.println(resposta);
-				
-				if(resposta.equalsIgnoreCase("Desligando servidor")) {
-					servidorService.desligar();
-				}
+				executarComando(scanner.nextLine(), printStream);
 			}
 			scanner.close();
 		} catch (IOException e) {
@@ -44,18 +39,23 @@ public class DistribuirTarefa implements Runnable {
 		}
 	}
 
-	private String verificarComando(String comando) {
+	private void executarComando(String comando, PrintStream printStream) throws IOException {
 		System.out.println("Recebeu " + comando);
 
 		switch (comando.toLowerCase()) {
 			case "c1":
-				return "Confirmação comando c1";
+				printStream.println("Confirmação comando c1");
+				break;
 			case "c2":
-				return "Confirmação comando c2";
+				printStream.println("Confirmação comando c2");
+				break;
 			case "fim":
-				return "Desligando servidor";
+				printStream.println("Desligando servidor");
+				servidorService.desligar();
+				break;
 			default:
-				return "Comando inválido.";
+				printStream.println("Comando inválido.");
+				break;
 		}
 	}
 }
