@@ -35,7 +35,7 @@ public class ServidorService {
 			try {
 				Socket socketRequisicaoClient = serverSocket.accept();
 
-				DistribuirTarefa distribuirTarefa = new DistribuirTarefa(socketRequisicaoClient, this);
+				DistribuirTarefa distribuirTarefa = new DistribuirTarefa(threadPool, socketRequisicaoClient, this);
 				threadPool.execute(distribuirTarefa);
 			} catch (SocketException e) {
 				System.out.println("SocketException -> status servidor ligado: " + isServidorLigado);

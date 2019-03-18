@@ -4,15 +4,20 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
 
 import com.andersonmarques.servidor.service.ServidorService;
+import com.andersonmarques.servidor.tarefa.comando.ComandoC1;
+import com.andersonmarques.servidor.tarefa.comando.ComandoC2;
 
 public class DistribuirTarefa implements Runnable {
 
 	private Socket socketRequisicaoClient;
 	private ServidorService servidorService;
+	private ExecutorService threadPool;
 
-	public DistribuirTarefa(Socket socketRequisicaoClient, ServidorService servidorService) {
+	public DistribuirTarefa(ExecutorService threadPool, Socket socketRequisicaoClient, ServidorService servidorService) {
+		this.threadPool = threadPool;
 		this.socketRequisicaoClient = socketRequisicaoClient;
 		this.servidorService = servidorService;
 	}
@@ -45,9 +50,11 @@ public class DistribuirTarefa implements Runnable {
 		switch (comando.toLowerCase()) {
 			case "c1":
 				printStream.println("Confirmação comando c1");
+				threadPool.execute(new ComandoC1(printStream));
 				break;
 			case "c2":
 				printStream.println("Confirmação comando c2");
+				threadPool.execute(new ComandoC2(printStream));
 				break;
 			case "fim":
 				printStream.println("Desligando servidor");
