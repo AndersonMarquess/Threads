@@ -3,6 +3,7 @@ package com.andersonmarques.servidor.tarefa;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
@@ -16,11 +17,13 @@ public class DistribuirTarefa implements Runnable {
 	private Socket socketRequisicaoClient;
 	private ServidorService servidorService;
 	private ExecutorService threadPool;
+	private BlockingQueue<String> filaComandos;
 
 	public DistribuirTarefa(ExecutorService threadPool, Socket socketRequisicaoClient,
-			ServidorService servidorService) {
+			BlockingQueue<String> filaComandos, ServidorService servidorService) {
 		this.threadPool = threadPool;
 		this.socketRequisicaoClient = socketRequisicaoClient;
+		this.filaComandos = filaComandos;
 		this.servidorService = servidorService;
 	}
 
@@ -50,25 +53,43 @@ public class DistribuirTarefa implements Runnable {
 		System.out.println("Recebeu " + comando);
 
 		switch (comando.toLowerCase()) {
-		case "c1":
-			printStream.println("Confirmação comando c1");
-			threadPool.execute(new ComandoC1(printStream));
-			break;
-		case "c2":
-			printStream.println("Confirmação comando c2");
-			
-			/* submit equivalente ao execute para Runnable */
-			Future<String> respostaWS = threadPool.submit(new ComandoC2ChamaWebService());
-			Future<String> respostaDB = threadPool.submit(new ComandoC2AcessaBanco());
-			threadPool.execute(new TrataResultadosFuture(respostaWS, respostaDB, printStream));
-			break;
-		case "fim":
-			printStream.println("Desligando servidor");
-			servidorService.desligar();
-			break;
-		default:
-			printStream.println("Comando inválido.");
-			break;
+			case "c1":
+				printStream.println("Confirmação comando c1");
+				threadPool.execute(new ComandoC1(printStream));
+				break;
+				
+			case "c2":
+				printStream.println("Confirmação comando c2");
+				tarefaComRetorno(printStream);
+				break;
+				
+			case "c3":
+				printStream.println("Confirmação comando c3");
+				processoEmFila(comando, printStream);
+				break;
+				
+			case "fim":
+				printStream.println("Desligando servidor");
+				servidorService.desligar();
+				break;
+				
+			default:
+				printStream.println("Comando inválido.");
+				break;
 		}
+	}
+
+	private void tarefaComRetorno(PrintStream printStream) {
+		/* submit equivalente ao execute para Runnable */
+		Future<String> respostaWS = threadPool.submit(new ComandoC2ChamaWebService());
+		Future<String> respostaDB = threadPool.submit(new ComandoC2AcessaBanco());
+		threadPool.execute(new TrataResultadosFuture(respostaWS, respostaDB, printStream));
+	}
+
+	private void processoEmFila(String comando, PrintStream printStream) throws InterruptedException {
+		filaComandos.put(comando);
+		printStream.println("Comando c3 adicionado na fila "+Thread.currentThread().getName());
+		threadPool.execute(new ConsumirComandos(filaComandos, printStream));
+		threadPool.execute(new ConsumirComandos(filaComandos, printStream));
 	}
 }
